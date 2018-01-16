@@ -1,5 +1,39 @@
-body {
-  margin: 0;
+* {
+  box-sizing: border-box;
+}
+
+html, body {
   padding: 0;
-  font-family: sans-serif;
+  margin: 0;
+  height: 100%;
+  font-family: 'Nunito', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: #333;
+}
+
+#root, .app {
+  height: 100%;
+}
+
+.center {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  height: 100%;
+}
+
+a {
+  color: lightseagreen;
+}
+
+button {
+  font-family: inherit;
+  font-size: 20px;
+  padding: 13px 20px;
+  border-radius: 5px;
+  color: white;
+  background: linear-gradient(135deg, #7ae7ec 0%,#ef99fe 100%);
+  border: 0px;
+  font-weight: bold;
+  cursor: pointer;
 }

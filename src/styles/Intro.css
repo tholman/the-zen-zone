@@ -1,0 +1,29 @@
+
+
+.intro-component {
+  max-width: 800px;
+  margin: auto;
+}
+
+header {
+  
+}
+
+header img {
+  height: 330px;
+  padding-right: 50px;
+}
+
+header h1 {
+  margin-top: 0px;
+  font-size: 28px;
+}
+
+header p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.zen-zone-intro {
+  width: 400px;
+}
