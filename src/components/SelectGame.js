@@ -7,9 +7,9 @@ class SelectGame extends Component {
     return (
       <section className="center">
         Select your Game
-        <button onClick={()=>this.props.onButtonClick(1)}>1</button>
-        <button onClick={()=>this.props.onButtonClick(2)}>2</button>
-        <button onClick={()=>this.props.onButtonClick(3)}>3</button>
+        <button onClick={()=>this.props.onButtonClick("swirl")}>swirl</button>
+        <button onClick={()=>this.props.onButtonClick("switch")}>switch</button>
+        <button onClick={()=>this.props.onButtonClick("break")}>break</button>
       </section>
     );
   }

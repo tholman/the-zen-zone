@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 // import '../styles/SelectGame.css';
 // import logo from '../assets/Logo.svg';
 
-class GameSwirl extends Component {
+class GameSwitch extends Component {
   render() {
     return (
       <section className="center">
-        Swirl Game
+        Switch Game
       </section>
     );
   }
 }
 
-export default GameSwirl;
+export default GameSwitch;
