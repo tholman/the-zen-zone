@@ -7,9 +7,9 @@ class SelectGame extends Component {
     return (
       <section className="center">
         Select your Game
-        <button>1</button>
-        <button>2</button>
-        <button>3</button>
+        <button onClick={()=>this.props.onButtonClick(1)}>1</button>
+        <button onClick={()=>this.props.onButtonClick(2)}>2</button>
+        <button onClick={()=>this.props.onButtonClick(3)}>3</button>
       </section>
     );
   }
