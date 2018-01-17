@@ -41,35 +41,36 @@ class App extends Component {
 
   render() {
 
-    let currentPage = null;
-    switch (this.state.currentPage) {
-      case "intro":
-        currentPage = <Intro onButtonClick={() => this.changePage("select-game")}/>
-        break;
-      case "select-game":
-        currentPage = <SelectGame onButtonClick={this.selectGame} />
-        break;
-      case "select-time":
-        currentPage = <SelectTime onButtonClick={this.selectTime}/>
-        break;
-      case "game":
-        switch (this.state.game) {
-          case "swirl":
-            currentPage = <GameSwirl time={this.state.time} />
-            break;
-          case "switch":
-            currentPage = <GameSwitch time={this.state.time} />
-            break;
-          case "break":
-            currentPage = <GameBreak time={this.state.time} />
-            break;
-          default:
-            break;
-        }
-        break;
-      default:
-        break;
-    }
+    let currentPage = <GameSwitch time="1" />
+    // let currentPage = null;
+    // switch (this.state.currentPage) {
+    //   case "intro":
+    //     currentPage = <Intro onButtonClick={() => this.changePage("select-game")}/>
+    //     break;
+    //   case "select-game":
+    //     currentPage = <SelectGame onButtonClick={this.selectGame} />
+    //     break;
+    //   case "select-time":
+    //     currentPage = <SelectTime onButtonClick={this.selectTime}/>
+    //     break;
+    //   case "game":
+    //     switch (this.state.game) {
+    //       case "swirl":
+    //         currentPage = <GameSwirl time={this.state.time} />
+    //         break;
+    //       case "switch":
+    //         currentPage = <GameSwitch time={this.state.time} />
+    //         break;
+    //       case "break":
+    //         currentPage = <GameBreak time={this.state.time} />
+    //         break;
+    //       default:
+    //         break;
+    //     }
+    //     break;
+    //   default:
+    //     break;
+    // }
     
     return (
       <div className="app">
