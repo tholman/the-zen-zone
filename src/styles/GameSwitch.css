@@ -5,7 +5,7 @@
 
 .switches-carousel {
   margin-left: 15vw;
-  transition: transform 300ms;
+  transition: transform 500ms ease-in-out;
 }
 
 .switches-set {
@@ -15,6 +15,7 @@
   display: inline-block;
   opacity: 0.3;
   pointer-events: none;
+  transition: opacity 300ms ease-in-out;
 }
 
 .switches-set.active {
