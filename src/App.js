@@ -41,7 +41,7 @@ class App extends Component {
 
   render() {
 
-    let currentPage = <GameSwitch time="1" />
+    let currentPage = <GameSwitch time="3" />
     // let currentPage = null;
     // switch (this.state.currentPage) {
     //   case "intro":
