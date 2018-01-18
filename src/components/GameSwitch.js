@@ -25,9 +25,14 @@ class GameSwitch extends Component {
     }
 
     if (this.currentSetOnSwitches === switchSets[this.state.currentSet].switchCount) {
+
+      // Last set!
+      if ( this.state.currentSet === this.totalSets - 1) {
+        this.props.completedGame(100); // passing time in milliseconds
+      }
+
       this.setState({currentSet: this.state.currentSet + 1});
       this.currentSetOnSwitches = 0;
-      console.log("next set!");
     }
   }
 
@@ -43,6 +48,8 @@ class GameSwitch extends Component {
 
       let switches = this.renderSwitches(i, set.switchCount);
       let id = "set-" + i;;
+      
+      // TODO: Replace with react class thingo
       let className = "switches-set";
       if( active ) {
         className += " active";
@@ -81,7 +88,6 @@ class GameSwitch extends Component {
 
   render() {
     let sets = this.renderSets();
-
     let switchesCarouselStyles = {
       width: this.totalSets * 100 + 'vw',
       transform: "translateX(-" + this.state.currentSet * 60 + "vw)"
