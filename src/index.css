@@ -22,6 +22,10 @@ html, body {
   height: 100%;
 }
 
+.center.vertical {
+  flex-direction: column;
+}
+
 a {
   color: lightseagreen;
 }
@@ -36,4 +40,11 @@ button {
   border: 0px;
   font-weight: bold;
   cursor: pointer;
+}
+
+.section-options button {
+  width: 150px;
+  height: 150px;
+  border-radius: 100%;
+  margin: 10px;
 }
