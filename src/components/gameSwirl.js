@@ -125,7 +125,7 @@ class GameSwirl extends Component {
       let id = "set-" + i;
       
       // TODO: Replace with react class thingo
-      let className = "item-set";
+      let className = "item";
       if( active ) {
         className += " active";
       }
@@ -133,7 +133,7 @@ class GameSwirl extends Component {
       sets.push(
         <div key={id} id={id} className={className}>
           <div className="center">
-            <div className="switches-container">
+            <div className="item-contents">
               <canvas
                 ref="canvas"
                 width="1000"
@@ -158,8 +158,10 @@ class GameSwirl extends Component {
     }
 
     return (
-      <section className="center" style={carouselStyles}>
-        {sets}
+      <section className="carousel-container">
+        <section className="carousel" style={carouselStyles}>
+          {sets}
+        </section>
       </section>
     );
   }
