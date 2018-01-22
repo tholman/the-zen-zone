@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../styles/GameSwitch.css';
+import '../styles/Carousel.css';
 import switchSets from '../data/SwitchSets.js';
 // import logo from '../assets/Logo.svg';
 
@@ -47,10 +48,10 @@ class GameSwitch extends Component {
       let active = (this.state.currentSet === i);
 
       let switches = this.renderSwitches(i, set.switchCount);
-      let id = "set-" + i;;
+      let id = "set-" + i;
       
       // TODO: Replace with react class thingo
-      let className = "switches-set";
+      let className = "item";
       if( active ) {
         className += " active";
       }
@@ -58,7 +59,7 @@ class GameSwitch extends Component {
       sets.push(
         <div key={id} id={id} className={className}>
           <div className="center">
-            <div className="switches-container">
+            <div className="item-contents">
               { switches }
             </div>
           </div>
@@ -88,14 +89,14 @@ class GameSwitch extends Component {
 
   render() {
     let sets = this.renderSets();
-    let switchesCarouselStyles = {
+    let carouselStyles = {
       width: this.totalSets * 100 + 'vw',
       transform: "translateX(-" + this.state.currentSet * 60 + "vw)"
     }
 
     return (
-      <section className="switches-game">
-        <div className="switches-carousel" style={switchesCarouselStyles}>
+      <section className="carousel-container">
+        <div className="carousel" style={carouselStyles}>
           {sets}
         </div>
       </section>
