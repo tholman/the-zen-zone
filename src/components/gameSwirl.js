@@ -12,12 +12,16 @@ class GameSwirl extends Component {
 
     this.currentSet = 0;
     this.totalSets = this.props.time;
-
-    this.animationFrame = null;
-    this.canvasCenter = null;
     this.sets = [];
-    this.position = {x: 0, y: 0}
-    this.draw = this.draw.bind(this);
+
+    this.currentSetData = null;
+
+    this.animationFrame = true;
+    this.canvasCenter = null;
+    
+    this.mousePosition = {x: 0, y: 0}
+    
+    this.drawLoop = this.drawLoop.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
 
     this.state = {
@@ -25,89 +29,135 @@ class GameSwirl extends Component {
     }
   }
 
-  // componentDidMount() {
-  //   this.context = this.refs.canvas.getContext('2d');
-  //   this.refs.canvas.width = 1000;
-  //   this.refs.canvas.height = 1000;
-  //   this.setupSet(this.state.currentSet);
-  //   this.draw();
-  // }
+  componentDidMount() {
+    this.setupSets(this.totalSets);
+    this.drawInitialSets();
+    this.drawLoop();
+  }
 
-  setupSet() {
-    this.canvasCenter = {x: window.innerWidth, y: window.innerHeight}
+  setupSets(setCount) {
 
-    for (let i = 0; i < 550; i++) {
+    for( let i = 0; i < setCount; i++) {
 
-        let point = swirlSets[this.currentSet].system(i, this.refs.canvas.width, this.refs.canvas.height);
+      let set = {
+        canvas: this.refs['canvas-' + i],
+        context: this.refs['canvas-' + i].getContext('2d'),
+        points: []
+      };
+
+      set.canvas.width = 1000;
+      set.canvas.height = 1000;
+
+      for (let j = 0; j < 50; j++) {
+        let point = swirlSets[i].system(j, set.canvas.width, set.canvas.height);
         point.active = true;
         point.life = 1;
 
-        this.sets.push(point);
+        set.points.push(point);
+      }
+
+      this.sets.push(set)
+    }
+
+    this.currentSetData = this.sets[this.currentSet];
+  }
+
+  drawInitialSets() {
+
+    for( let i = 0; i < this.totalSets - 1; i++) {
+      this.currentSetData = this.sets[i];
+      this.draw();
+    }
+
+    this.currentSetData = this.sets[this.currentSet];
+  }
+
+  drawLoop() {
+    this.update();
+    if( this.animationFrame ) {
+
+      this.draw();
+      this.animationFrame = requestAnimationFrame(this.drawLoop);
     }
   }
 
   draw() {
-
-    this.update();
-
-    // Clear
-    this.refs.canvas.width = this.refs.canvas.width;
-
-    // Draw based on current set knowledge
-    // this.context.strokeStyle = "#000";
-    this.context.lineWidth = "6";
-    this.context.lineCap = "round";
-    this.context.moveTo(this.sets[0].x, this.sets[0].y)
     
-    for( let i = 1; i < this.sets.length - 1; i++ ) {
+    this.currentSetData.canvas.width = this.currentSetData.canvas.width;
+    
+    let context = this.currentSetData.context;
+    let points = this.currentSetData.points;
 
-      this.context.beginPath();
-      this.context.moveTo(this.sets[i - 1].x, this.sets[i - 1].y);
-
-      // if( this.sets[i].active ) {
-        this.context.strokeStyle = "rgba(0, 0, 0, " + (0.1 + this.sets[i].life) + ")";
-        this.context.lineWidth = (8 * this.sets[i].life + 2) + "";
-        // console.log(6 * this.sets[i].life + 1)
-
-        this.context.lineTo(this.sets[i].x, this.sets[i].y);
-        this.context.stroke();
-      // } else {
-        // this.context.moveTo(this.sets[i].x, this.sets[i].y);
-      // }
+    context.lineCap = "round";
+    context.moveTo(points[0].x, points[0].y)
+    
+    for( let i = 1; i < points.length - 1; i++ ) {
+      context.strokeStyle = "rgba(0, 0, 0, " + (0.1 + points[i].life) + ")";
+      context.lineWidth = (8 * points[i].life + 2) + "";
+      
+      context.beginPath();
+      context.moveTo(points[i - 1].x, points[i - 1].y);
+      context.lineTo(points[i].x, points[i].y);
+      context.stroke();
     }
-
-
-    this.animationFrame = requestAnimationFrame(this.draw);
   }
 
   update() {
-    for( let i = 0; i < this.sets.length; i++ ) {
-      let dot = this.sets[i];
-      let a = this.position.x - dot.x;
-      let b = this.position.y - dot.y;
+
+    let points = this.currentSetData.points;
+    let foundActive = false;
+    
+    for( let i = 0; i < points.length; i++ ) {
+      let dot = points[i];
+      let a = this.mousePosition.x - dot.x;
+      let b = this.mousePosition.y - dot.y;
       let distance = Math.sqrt( a * a + b * b ); // distance between mouse and set item.
 
-      if( distance < 50 && this.sets[i].active === true) {
-        
+      if( points[i].active === true ) {
+        foundActive = true;
+      }
+
+      if( distance < 50 && points[i].active === true) {
+
         // Fade out
-        this.sets[i].life = this.sets[i].life - 0.04;
-        if( this.sets[i].life <= 0 ) {
-          this.sets[i].active = false;
+        points[i].life = points[i].life - 0.04;
+        if( points[i].life <= 0 ) {
+          points[i].active = false;
         }
 
-      } else if (this.sets[i].active === true && this.sets[i].life < 1) {
+      } else if (points[i].active === true && points[i].life < 1) {
 
         // Fade back in
-        this.sets[i].life = this.sets[i].life + 0.05;
+        points[i].life = points[i].life + 0.05;
       }
-    }    
+    }
+
+    if( foundActive === false ) {
+      this.currentSet++;
+
+      if ( this.state.currentSet === this.totalSets - 1) {
+
+        this.props.completedGame(100); // passing time in milliseconds
+        cancelAnimationFrame(this.animationFrame);
+        this.animationFrame = null;
+
+      } else {
+
+        this.setState({
+          'currentSet': this.currentSet
+        })
+        this.currentSetData = this.sets[this.currentSet];
+        
+      }
+
+    }
   }
 
   onMouseMove(event) { // & touch event?
     
     // X = event.x, y = event.x
-    var rect = this.refs.canvas.getBoundingClientRect();
-    this.position = {
+    var rect = this.currentSetData.canvas.getBoundingClientRect();
+    this.mousePosition = {
       x: (event.nativeEvent.clientX - rect.left) * 2,
       y: (event.nativeEvent.clientY - rect.top) * 2
     };
@@ -123,6 +173,7 @@ class GameSwirl extends Component {
       // let set = swirlSets[i];
       let active = (this.state.currentSet === i);
       let id = "set-" + i;
+      let canvasRef = "canvas-" + i;
       
       // TODO: Replace with react class thingo
       let className = "item";
@@ -135,7 +186,7 @@ class GameSwirl extends Component {
           <div className="center">
             <div className="item-contents">
               <canvas
-                ref="canvas"
+                ref={canvasRef}
                 width="1000"
                 height="1000"
                 onMouseMove={this.onMouseMove}>
@@ -150,7 +201,6 @@ class GameSwirl extends Component {
   }
 
   render() {
-
     let sets = this.renderSets();
     let carouselStyles = {
       width: this.totalSets * 100 + 'vw',
