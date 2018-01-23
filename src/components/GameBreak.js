@@ -45,7 +45,7 @@ class GameBreak extends Component {
       set.canvas.width = 1000;
       set.canvas.height = 1000;
 
-      let point = {x: set.canvas.width / 2, y: set.canvas.width / 2, radius: 420, active: true};
+      let point = {x: set.canvas.width / 2, y: set.canvas.width / 2, radius: 420, active: true, level: 0};
 
       set.points.push(point);
       this.sets.push(set)
@@ -71,7 +71,10 @@ class GameBreak extends Component {
     
     // Erase current point
     let context = this.currentSetData.context;
-    
+
+    let color = breakSets[this.currentSet].colors[point.level];
+    context.fillStyle = color;
+
     context.beginPath();
     context.arc(point.x, point.y, point.radius, 0, 2 * Math.PI);
     context.fill();
@@ -88,7 +91,7 @@ class GameBreak extends Component {
     // Find what needs splitting
     for( let i = 0; i < this.currentSetData.points.length; i++) {
       let point = this.currentSetData.points[i];
-      if( point.active === true ) {
+      if( point.active === true && point.level < 6) {
         var oldDistance = Math.hypot(this.oldMousePosition.x - point.x, this.oldMousePosition.y - point.y);
         var newDistance = Math.hypot(this.newMousePosition.x - point.x, this.newMousePosition.y - point.y);
         if( oldDistance > point.radius && newDistance < point.radius ) {
@@ -111,7 +114,8 @@ class GameBreak extends Component {
           x: point.x + point.radius / 2,
           y: point.y - point.radius / 2,
           radius: point.radius / 2,
-          active: true
+          active: true,
+          level: point.level + 1
         }
 
 
@@ -119,21 +123,24 @@ class GameBreak extends Component {
           x: point.x - point.radius / 2,
           y: point.y - point.radius / 2,
           radius: point.radius / 2,
-          active: true
+          active: true,
+          level: point.level + 1
         }
 
         let pointC = {
           x: point.x - point.radius / 2,
           y: point.y + point.radius / 2,
           radius: point.radius / 2,
-          active: true
+          active: true,
+          level: point.level + 1
         }
 
         let pointD = {
           x: point.x + point.radius / 2,
           y: point.y + point.radius / 2,
           radius: point.radius / 2,
-          active: true
+          active: true,
+          level: point.level + 1
         }
 
         this.currentSetData.points.push(pointA);
