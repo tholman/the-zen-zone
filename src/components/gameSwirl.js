@@ -48,7 +48,7 @@ class GameSwirl extends Component {
       set.canvas.width = 1000;
       set.canvas.height = 1000;
 
-      for (let j = 0; j < 50; j++) {
+      for (let j = 0; j < 550; j++) {
         let point = swirlSets[i].system(j, set.canvas.width, set.canvas.height);
         point.active = true;
         point.life = 1;

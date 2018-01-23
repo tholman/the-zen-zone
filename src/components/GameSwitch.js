@@ -59,7 +59,7 @@ class GameSwitch extends Component {
       sets.push(
         <div key={id} id={id} className={className}>
           <div className="center">
-            <div className="item-contents">
+            <div className="item-contents switch-box">
               { switches }
             </div>
           </div>

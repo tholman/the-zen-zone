@@ -2,11 +2,11 @@
 let SwitchSets = [
   {
     name: "square",
-    switchCount: 10
+    switchCount: 100
   },
   {
     name: "wave",
-    switchCount: 10
+    switchCount: 100
   },
   {
     name: "triangle",

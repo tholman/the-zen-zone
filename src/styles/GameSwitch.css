@@ -1,3 +1,8 @@
+.switch-box {
+  width: 470px;
+  height: 390px;
+}
+
 .switch {
   display: inline-block;
   margin: 8px;

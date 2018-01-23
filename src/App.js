@@ -55,37 +55,38 @@ class App extends Component {
   render() {
 
     let currentPage = null;
-    switch (this.state.currentPage) {
-      case "intro":
-        currentPage = <Intro onButtonClick={() => this.changePage("select-game")}/>
-        break;
-      case "select-game":
-        currentPage = <SelectGame onButtonClick={this.selectGame} />
-        break;
-      case "select-time":
-        currentPage = <SelectTime onButtonClick={this.selectTime}/>
-        break;
-      case "game":
-        switch (this.state.game) {
-          case "swirl":
-            currentPage = <GameSwirl time={this.state.time} completedGame={this.completedGame} />
-            break;
-          case "switch":
-            currentPage = <GameSwitch time={this.state.time} completedGame={this.completedGame} />
-            break;
-          case "break":
-            currentPage = <GameBreak time={this.state.time}  completedGame={this.completedGame} />
-            break;
-          default:
-            break;
-        }
-        break;
-      case "reflection":
-        currentPage = <Reflection onButtonClick={() => this.changePage("select-game")} />
-        break;
-      default:
-        break;
-    }
+    currentPage = <GameBreak time={1}  completedGame={this.completedGame} />
+    // switch (this.state.currentPage) {
+    //   case "intro":
+    //     currentPage = <Intro onButtonClick={() => this.changePage("select-game")}/>
+    //     break;
+    //   case "select-game":
+    //     currentPage = <SelectGame onButtonClick={this.selectGame} />
+    //     break;
+    //   case "select-time":
+    //     currentPage = <SelectTime onButtonClick={this.selectTime}/>
+    //     break;
+    //   case "game":
+    //     switch (this.state.game) {
+    //       case "swirl":
+    //         currentPage = <GameSwirl time={this.state.time} completedGame={this.completedGame} />
+    //         break;
+    //       case "switch":
+    //         currentPage = <GameSwitch time={this.state.time} completedGame={this.completedGame} />
+    //         break;
+    //       case "break":
+    //         currentPage = <GameBreak time={this.state.time}  completedGame={this.completedGame} />
+    //         break;
+    //       default:
+    //         break;
+    //     }
+    //     break;
+    //   case "reflection":
+    //     currentPage = <Reflection onButtonClick={() => this.changePage("select-game")} />
+    //     break;
+    //   default:
+    //     break;
+    // }
     
     return (
       <div className="app">
