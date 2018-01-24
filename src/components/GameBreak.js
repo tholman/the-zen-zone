@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-
 import '../styles/GameBreak.css';
 import '../styles/Carousel.css';
-
 import breakSets from '../data/BreakSets.js';
+import logo from '../assets/Logo.svg';
 
 class GameBreak extends Component {
 
   constructor(props) {
 
     super(props)
+
+    this.startTime = new Date();
 
     this.currentSet = 0;
     this.totalSets = this.props.time;
@@ -29,7 +30,6 @@ class GameBreak extends Component {
   componentDidMount() {
     this.setupSets(this.totalSets);
     this.drawInitialSets();
-    // this.drawLoop();
   }
 
   setupSets(setCount) {
@@ -57,13 +57,12 @@ class GameBreak extends Component {
   drawInitialSets() {
 
     // Draw the initial point
-    this.drawPoint(this.currentSetData.points[0]);
-    // for( let i = 0; i < this.totalSets - 1; i++) {
-    //   this.currentSetData = this.sets[i];
-    //   this.draw();
-    // }
+    for( let i = 0; i < this.totalSets; i++) {
+      this.currentSetData = this.sets[i];
+      this.drawPoint(this.currentSetData.points[0]);
+    }
 
-    // this.currentSetData = this.sets[this.currentSet];
+    this.currentSetData = this.sets[this.currentSet];
   }
 
 
@@ -88,16 +87,32 @@ class GameBreak extends Component {
 
   update() {
 
+    let foundActive = false;
+
     // Find what needs splitting
     for( let i = 0; i < this.currentSetData.points.length; i++) {
       let point = this.currentSetData.points[i];
       if( point.active === true && point.level < 6) {
+        foundActive = true;
         var oldDistance = Math.hypot(this.oldMousePosition.x - point.x, this.oldMousePosition.y - point.y);
         var newDistance = Math.hypot(this.newMousePosition.x - point.x, this.newMousePosition.y - point.y);
         if( oldDistance > point.radius && newDistance < point.radius ) {
           this.currentSetData.points[i].splitMe = true;
         }
       }
+    }
+
+    if( foundActive === false ) {
+      
+      this.currentSet++;
+
+      if ( this.state.currentSet === this.totalSets - 1) {
+        this.endGame();
+      } else {
+        this.setState({'currentSet': this.currentSet})
+        this.currentSetData = this.sets[this.currentSet];
+      }
+      return;
     }
 
     // Split items that need splitting
@@ -158,6 +173,11 @@ class GameBreak extends Component {
     }
   }
 
+  endGame() {
+    let totalTime = new Date().valueOf() - this.startTime.valueOf();
+    this.props.completedGame(totalTime);
+  }
+
   onMouseMove(event) { // & touch event?
     this.oldMousePosition = this.newMousePosition;
 
@@ -215,11 +235,16 @@ class GameBreak extends Component {
     }
 
     return (
-      <section className="carousel-container">
-        <section className="carousel" style={carouselStyles}>
-          {sets}
+      <div>
+        <div className="back" onClick={(event) => {this.endGame(event)}}>
+          <img src={logo} className="App-logo" alt="The Zen Zone" />
+        </div>
+        <section className="carousel-container">
+          <section className="carousel" style={carouselStyles}>
+            {sets}
+          </section>
         </section>
-      </section>
+      </div>
     );
   }
 }

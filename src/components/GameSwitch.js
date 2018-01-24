@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import '../styles/GameSwitch.css';
 import '../styles/Carousel.css';
 import switchSets from '../data/SwitchSets.js';
-// import logo from '../assets/Logo.svg';
+import logo from '../assets/Logo.svg';
 
 class GameSwitch extends Component {
 
   constructor(props) {
     super(props)
+
+    this.startTime = new Date();
     
     // this.totalSwitches = this.props.time * 10; // 1 switch for each second
     this.totalSets = this.props.time;
@@ -18,8 +20,13 @@ class GameSwitch extends Component {
     }
   }
 
+  endGame() {
+    let totalTime = new Date().valueOf() - this.startTime.valueOf();
+    this.props.completedGame(totalTime);
+  }
+
   onCheckboxChange(event) {
-    if( event.target.checked ) {
+    if(event.target.checked) {
       this.currentSetOnSwitches++;
     } else {
       this.currentSetOnSwitches--;
@@ -28,8 +35,8 @@ class GameSwitch extends Component {
     if (this.currentSetOnSwitches === switchSets[this.state.currentSet].switchCount) {
 
       // Last set!
-      if ( this.state.currentSet === this.totalSets - 1) {
-        this.props.completedGame(100); // passing time in milliseconds
+      if (this.state.currentSet === this.totalSets - 1) {
+        this.endGame();
       }
 
       this.setState({currentSet: this.state.currentSet + 1});
@@ -95,11 +102,16 @@ class GameSwitch extends Component {
     }
 
     return (
-      <section className="carousel-container">
-        <div className="carousel" style={carouselStyles}>
-          {sets}
+      <div>
+        <div className="back" onClick={(event) => {this.endGame(event)}}>
+          <img src={logo} className="App-logo" alt="The Zen Zone" />
         </div>
-      </section>
+        <section className="carousel-container">
+          <div className="carousel" style={carouselStyles}>
+            {sets}
+          </div>
+        </section>
+      </div>
     );
   }
 }

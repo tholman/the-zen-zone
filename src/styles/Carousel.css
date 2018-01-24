@@ -23,7 +23,14 @@
   pointer-events: all;
 }
 
-/*.item-contents {
-  width: 500px;
-  height: 500px;
-}*/
+@media only screen and (max-width: 1000px) {
+  
+  .carousel {
+    margin-left: 10vw;
+  }
+
+  .item {
+    width: 75vw;
+    margin-left: 5vw;
+  }
+}

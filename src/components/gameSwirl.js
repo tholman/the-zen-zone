@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-
 import '../styles/GameSwirl.css';
 import '../styles/Carousel.css';
-
 import swirlSets from '../data/SwirlSets.js';
+import logo from '../assets/Logo.svg';
 
 class GameSwirl extends Component {
 
   constructor(props) {
     super(props)
+
+    this.startTime = new Date();
 
     this.currentSet = 0;
     this.totalSets = this.props.time;
@@ -135,22 +136,20 @@ class GameSwirl extends Component {
     if( foundActive === false ) {
       this.currentSet++;
 
-      if ( this.state.currentSet === this.totalSets - 1) {
-
-        this.props.completedGame(100); // passing time in milliseconds
+      if (this.state.currentSet === this.totalSets - 1) {
+        this.endGame();
         cancelAnimationFrame(this.animationFrame);
         this.animationFrame = null;
-
       } else {
-
-        this.setState({
-          'currentSet': this.currentSet
-        })
+        this.setState({'currentSet': this.currentSet})
         this.currentSetData = this.sets[this.currentSet];
-        
       }
-
     }
+  }
+
+  endGame() {
+    let totalTime = new Date().valueOf() - this.startTime.valueOf();
+    this.props.completedGame(totalTime);
   }
 
   onMouseMove(event) { // & touch event?
@@ -208,11 +207,16 @@ class GameSwirl extends Component {
     }
 
     return (
-      <section className="carousel-container">
-        <section className="carousel" style={carouselStyles}>
-          {sets}
+      <div>
+        <div className="back" onClick={(event) => {this.endGame(event)}}>
+          <img src={logo} className="App-logo" alt="The Zen Zone" />
+        </div>
+        <section className="carousel-container">
+          <section className="carousel" style={carouselStyles}>
+            {sets}
+          </section>
         </section>
-      </section>
+      </div>
     );
   }
 }

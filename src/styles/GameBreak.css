@@ -1,3 +1,11 @@
 canvas {
-  /*background: #eee;*/
+  width: 500px;
+  height: 500px;
+}
+
+@media only screen and (max-width: 1000px) {
+  canvas {
+    width: 80vw;
+    height: 80vw;
+  }
 }
