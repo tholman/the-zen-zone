@@ -6,7 +6,7 @@ html, body {
   padding: 0;
   margin: 0;
   height: 100%;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Nunito', helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   color: #333;
 }
@@ -40,11 +40,18 @@ button {
   border: 0px;
   font-weight: bold;
   cursor: pointer;
+  
+  opacity: 1;
+  transition: opacity 300ms ease;
+}
+
+button:hover {
+  opacity: 0.8;
 }
 
 .section-options button {
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
   border-radius: 100%;
   margin: 10px;
 }
