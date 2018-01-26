@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
+
 import Intro from './components/Intro.js';
 import SelectGame from './components/SelectGame.js';
 import SelectTime from './components/SelectTime.js';
@@ -26,30 +28,35 @@ class App extends Component {
   }
 
   changePage(page) {
-    this.setState({currentPage: page})
+    this.setState({currentPage: ""});
+    setTimeout(() => {this.setState({currentPage: page})}, 450);
+    
   }
 
   selectGame(game) {
     this.setState({
-      game: game,
-      currentPage: "select-time"
+      game: game
     })
+
+    this.changePage("select-time")
   }
 
   selectTime(time) {
     this.setState({
-      time: time,
-      currentPage: "game"
-    })
+      time: time
+    });
+
+    this.changePage("game");
   }
 
   completedGame(totalTime) {
     this.setState({
-      currentPage: "reflection",
       game: null,
       time: null,
       totalTime: this.state.totalTime + totalTime
     })
+
+    this.changePage("reflection")
   }
 
   render() {
@@ -76,6 +83,7 @@ class App extends Component {
             currentPage = <GameBreak time={this.state.time}  completedGame={this.completedGame} />
             break;
           default:
+            currentPage = null;
             break;
         }
         break;
@@ -83,12 +91,23 @@ class App extends Component {
         currentPage = <Reflection totalTime={this.state.totalTime} onButtonClick={() => this.changePage("select-game")} />
         break;
       default:
+        currentPage = <span></span>;
         break;
     }
+
+    let page = <CSSTransition
+      key={this.state.currentPage}
+      classNames="fade"
+      timeout={{ enter: 400, exit: 400 }}>
+        {currentPage}
+      </CSSTransition>
     
     return (
+
       <div className="app">
-        { currentPage }
+        <TransitionGroup>
+          { page }
+        </TransitionGroup>
       </div>
     );
   }
