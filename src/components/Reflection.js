@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import '../styles/Intro.css';
-import '../styles/Reflection.css';
 import logo from '../assets/Logo.svg';
 
 class Reflection extends Component {

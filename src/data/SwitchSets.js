@@ -10,15 +10,15 @@ let SwitchSets = [
   },
   {
     name: "triangle",
-    switchCount: 10
+    switchCount: 100
   },
   {
     name: "equals",
-    switchCount: 10
+    switchCount: 100
   },
   {
     name: "circle",
-    switchCount: 10
+    switchCount: 100
   }
 ]
 

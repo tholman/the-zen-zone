@@ -61,6 +61,7 @@ button:hover {
   height: 200px;
   border-radius: 100%;
   margin: 10px;
+  font-size: 24px;
 }
 
 .back {
@@ -102,9 +103,14 @@ button:hover {
   transition: opacity 400ms ease;
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 700px) {
   .section-options {
     display: flex;
     flex-direction: column;
+  }
+
+  .section-options button {
+    width: 150px;
+    height: 150px;
   }
 }

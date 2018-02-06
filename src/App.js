@@ -50,6 +50,7 @@ class App extends Component {
   }
 
   completedGame(totalTime) {
+
     this.setState({
       game: null,
       time: null,
@@ -83,7 +84,7 @@ class App extends Component {
             currentPage = <GameBreak time={this.state.time}  completedGame={this.completedGame} />
             break;
           default:
-            currentPage = null;
+            currentPage = <span></span>;
             break;
         }
         break;
@@ -106,7 +107,7 @@ class App extends Component {
 
       <div className="app">
         <TransitionGroup>
-          { page }
+          { currentPage }
         </TransitionGroup>
       </div>
     );

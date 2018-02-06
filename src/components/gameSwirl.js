@@ -10,6 +10,7 @@ class GameSwirl extends Component {
     super(props)
 
     this.startTime = new Date();
+    this.baseWidth = 1000; // Base canvas width
 
     this.currentSet = 0;
     this.totalSets = this.props.time;
@@ -23,7 +24,7 @@ class GameSwirl extends Component {
     this.mousePosition = {x: 0, y: 0}
     
     this.drawLoop = this.drawLoop.bind(this);
-    this.onMouseMove = this.onMouseMove.bind(this);
+    this.onInputMove = this.onInputMove.bind(this);
 
     this.state = {
       currentSet: 0
@@ -46,8 +47,8 @@ class GameSwirl extends Component {
         points: []
       };
 
-      set.canvas.width = 1000;
-      set.canvas.height = 1000;
+      set.canvas.width = this.baseWidth;
+      set.canvas.height = this.baseWidth;
 
       for (let j = 0; j < 550; j++) {
         let point = swirlSets[i].system(j, set.canvas.width, set.canvas.height);
@@ -137,9 +138,9 @@ class GameSwirl extends Component {
       this.currentSet++;
 
       if (this.state.currentSet === this.totalSets - 1) {
-        this.endGame();
         cancelAnimationFrame(this.animationFrame);
         this.animationFrame = null;
+        this.endGame();
       } else {
         this.setState({'currentSet': this.currentSet})
         this.currentSetData = this.sets[this.currentSet];
@@ -152,13 +153,23 @@ class GameSwirl extends Component {
     this.props.completedGame(totalTime);
   }
 
-  onMouseMove(event) { // & touch event?
-    
-    // X = event.x, y = event.x
+  onInputMove(event) { 
+
     var rect = this.currentSetData.canvas.getBoundingClientRect();
+
+    let x, y = 0;
+    if(event.nativeEvent.changedTouches) {
+      x = event.nativeEvent.changedTouches[0].clientX - rect.left;
+      y = event.nativeEvent.changedTouches[0].clientY - rect.top;
+    } else {
+      x = event.nativeEvent.clientX - rect.left;
+      y = event.nativeEvent.clientY - rect.top;
+    }
+
+    let multiplier = this.baseWidth / this.currentSetData.canvas.clientWidth;
     this.mousePosition = {
-      x: (event.nativeEvent.clientX - rect.left) * 2,
-      y: (event.nativeEvent.clientY - rect.top) * 2
+      x: x * multiplier,
+      y: y * multiplier
     };
   }
 
@@ -188,7 +199,8 @@ class GameSwirl extends Component {
                 ref={canvasRef}
                 width="1000"
                 height="1000"
-                onMouseMove={this.onMouseMove}>
+                onMouseMove={this.onInputMove}
+                onTouchMove={this.onInputMove}>
               </canvas>
             </div>
           </div>
@@ -201,9 +213,16 @@ class GameSwirl extends Component {
 
   render() {
     let sets = this.renderSets();
+    
+    // TODO: This should not rely on magic numbers
+    let moveUnit = 60; // width of carousel + margin
+    if( window.innerWidth < 700) {
+      moveUnit = 85; // Smaller screens have larger central item
+    }
+
     let carouselStyles = {
       width: this.totalSets * 100 + 'vw',
-      transform: "translateX(-" + this.state.currentSet * 60 + "vw)"
+      transform: "translateX(-" + this.state.currentSet * moveUnit + "vw)"
     }
 
     return (

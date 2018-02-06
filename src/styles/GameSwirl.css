@@ -3,7 +3,7 @@ canvas {
   height: 500px;
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 700px) {
   canvas {
     width: 80vw;
     height: 80vw;

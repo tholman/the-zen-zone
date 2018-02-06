@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import '../styles/SelectTime.css';
-// import logo from '../assets/Logo.svg';
 
 class SelectTime extends Component {
   render() {

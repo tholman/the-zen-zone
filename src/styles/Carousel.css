@@ -23,14 +23,14 @@
   pointer-events: all;
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 700px) {
   
-  .carousel {
-    margin-left: 10vw;
+  .carousel{
+    margin-left: 5vw;
   }
 
   .item {
-    width: 75vw;
+    width: 80vw;
     margin-left: 5vw;
   }
 }

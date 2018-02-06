@@ -96,9 +96,16 @@ class GameSwitch extends Component {
 
   render() {
     let sets = this.renderSets();
+    
+    // TODO: This should not rely on magic numbers
+    let moveUnit = 60; // width of carousel + margin
+    if( window.innerWidth < 700) {
+      moveUnit = 85; // Smaller screens have larger central item
+    }
+
     let carouselStyles = {
       width: this.totalSets * 100 + 'vw',
-      transform: "translateX(-" + this.state.currentSet * 60 + "vw)"
+      transform: "translateX(-" + this.state.currentSet * moveUnit + "vw)"
     }
 
     return (

@@ -1,6 +1,6 @@
 .switch-box {
   width: 470px;
-  height: 390px;
+  height: 380px;
 }
 
 .switch {
@@ -50,4 +50,29 @@
 }
 .switch .input:checked ~ .slider:after {
   background: #50e08a;
+}
+
+@media only screen and (max-width: 700px) {
+
+  .switch {
+    margin: 6px;
+  }
+
+  .switch-box {
+    width: 280px;
+    text-align: center;
+    height: 495px;
+  }
+
+  .switch .slider {
+    height: 6px;
+    width: 20px;
+  }
+
+  .switch .slider:after {
+    left: -4px;
+    top: -4px;
+    width: 14px;
+    height: 14px;
+  }
 }
