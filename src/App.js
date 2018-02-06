@@ -107,7 +107,7 @@ class App extends Component {
 
       <div className="app">
         <TransitionGroup>
-          { currentPage }
+          { page }
         </TransitionGroup>
       </div>
     );
