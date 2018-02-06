@@ -11,6 +11,7 @@ class GameBreak extends Component {
     super(props)
 
     this.startTime = new Date();
+    this.baseWidth = 1000;
 
     this.currentSet = 0;
     this.totalSets = this.props.time;
@@ -20,7 +21,7 @@ class GameBreak extends Component {
     this.oldMousePosition = {x: 0, y: 0};
     this.newMousePosition = {x: 0, y: 0};
 
-    this.onMouseMove = this.onMouseMove.bind(this);
+    this.onInputMove = this.onInputMove.bind(this);
 
     this.state = {
       currentSet: 0
@@ -42,8 +43,8 @@ class GameBreak extends Component {
         points: []
       };
 
-      set.canvas.width = 1000;
-      set.canvas.height = 1000;
+      set.canvas.width = this.baseWidth;
+      set.canvas.height = this.baseWidth;
 
       let point = {x: set.canvas.width / 2, y: set.canvas.width / 2, radius: 420, active: true, level: 0};
 
@@ -178,17 +179,29 @@ class GameBreak extends Component {
     this.props.completedGame(totalTime);
   }
 
-  onMouseMove(event) { // & touch event?
+  onInputMove(event) { // & touch event?
     this.oldMousePosition = this.newMousePosition;
 
     var rect = this.currentSetData.canvas.getBoundingClientRect();
+
+    let x, y = 0;
+    if(event.nativeEvent.changedTouches) {
+      x = event.nativeEvent.changedTouches[0].clientX - rect.left;
+      y = event.nativeEvent.changedTouches[0].clientY - rect.top;
+    } else {
+      x = event.nativeEvent.clientX - rect.left;
+      y = event.nativeEvent.clientY - rect.top;
+    }
+
+    let multiplier = this.baseWidth / this.currentSetData.canvas.clientWidth;
     this.newMousePosition = {
-      x: (event.nativeEvent.clientX - rect.left) * 2,
-      y: (event.nativeEvent.clientY - rect.top) * 2
+      x: x * multiplier,
+      y: y * multiplier
     };
 
     this.update();
   }
+
 
   renderSets() {
 
@@ -216,7 +229,8 @@ class GameBreak extends Component {
                 ref={canvasRef}
                 width="1000"
                 height="1000"
-                onMouseMove={this.onMouseMove}>
+                onMouseMove={this.onInputMove}
+                onTouchMove={this.onInputMove}>
               </canvas>
             </div>
           </div>
