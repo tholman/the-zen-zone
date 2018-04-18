@@ -17,7 +17,7 @@ class Reflection extends Component {
           <p>
             You have been meditating with us for <b>{totalMinutes}</b> minutes and <b>{remainingSeconds}</b> seconds.
           </p>
-          <button onClick={this.props.onButtonClick}>Lets do some more?</button>
+          <button onClick={this.props.onButtonClick}>Let's do some more?</button>
         </div>
       </header>
     );
