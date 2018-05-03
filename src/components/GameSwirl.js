@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router';
+import BackButton from './BackButton.js'
 import '../styles/GameSwirl.css';
 import '../styles/Carousel.css';
 import swirlSets from '../data/SwirlSets.js';
-import logo from '../assets/Logo.svg';
 
 class GameSwirl extends Component {
 
@@ -151,6 +152,7 @@ class GameSwirl extends Component {
   endGame() {
     let totalTime = new Date().valueOf() - this.startTime.valueOf();
     this.props.completedGame(totalTime);
+    this.props.history.push('/');
   }
 
   onInputMove(event) { 
@@ -227,9 +229,7 @@ class GameSwirl extends Component {
 
     return (
       <div>
-        <div className="back" onClick={(event) => {this.endGame(event)}}>
-          <img src={logo} className="App-logo" alt="The Zen Zone" />
-        </div>
+        <BackButton endGame={(event) => {this.endGame(event)}} />
         <section className="carousel-container">
           <section className="carousel" style={carouselStyles}>
             {sets}
@@ -240,4 +240,4 @@ class GameSwirl extends Component {
   }
 }
 
-export default GameSwirl;
+export default withRouter(GameSwirl);

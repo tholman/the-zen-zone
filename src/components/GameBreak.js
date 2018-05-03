@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router';
+import BackButton from './BackButton.js';
 import '../styles/GameBreak.css';
 import '../styles/Carousel.css';
 import breakSets from '../data/BreakSets.js';
-import logo from '../assets/Logo.svg';
 
 class GameBreak extends Component {
 
@@ -177,6 +178,7 @@ class GameBreak extends Component {
   endGame() {
     let totalTime = new Date().valueOf() - this.startTime.valueOf();
     this.props.completedGame(totalTime);
+    this.props.history.push('/');
   }
 
   onInputMove(event) { // & touch event?
@@ -257,9 +259,7 @@ class GameBreak extends Component {
 
     return (
       <div>
-        <div className="back" onClick={(event) => {this.endGame(event)}}>
-          <img src={logo} className="App-logo" alt="The Zen Zone" />
-        </div>
+        <BackButton endGame={(event) => {this.endGame(event)}} />
         <section className="carousel-container">
           <section className="carousel" style={carouselStyles}>
             {sets}
@@ -270,4 +270,4 @@ class GameBreak extends Component {
   }
 }
 
-export default GameBreak;
+export default withRouter(GameBreak);

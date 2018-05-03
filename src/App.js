@@ -1,115 +1,105 @@
 import React, { Component } from 'react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import { CSSTransition, TransitionGroup } from 'react-transition-group'
-
+import Game from './components/Game.js';
 import Intro from './components/Intro.js';
 import SelectGame from './components/SelectGame.js';
 import SelectTime from './components/SelectTime.js';
 import Reflection from './components/Reflection.js';
 
-import GameSwirl from './components/GameSwirl.js';
-import GameSwitch from './components/GameSwitch.js';
-import GameBreak from './components/GameBreak.js';
-
 class App extends Component {
-
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      currentPage: "intro",
-      game: null,
-      time: null,
-      totalTime: 0 //milliseconds
-    }
+      currentPage: 'intro',
+      totalTime: 0, //milliseconds
+    };
 
-    this.selectGame = this.selectGame.bind(this);
-    this.selectTime = this.selectTime.bind(this);
     this.completedGame = this.completedGame.bind(this);
   }
 
-  changePage(page) {
-    this.setState({currentPage: ""});
-    setTimeout(() => {this.setState({currentPage: page})}, 450);
-    
-  }
-
-  selectGame(game) {
-    this.setState({
-      game: game
-    })
-
-    this.changePage("select-time")
-  }
-
-  selectTime(time) {
-    this.setState({
-      time: time
-    });
-
-    this.changePage("game");
-  }
-
   completedGame(totalTime) {
-
     this.setState({
-      game: null,
-      time: null,
-      totalTime: this.state.totalTime + totalTime
-    })
-
-    this.changePage("reflection")
+      totalTime: this.state.totalTime + totalTime,
+      currentPage: 'reflection',
+    });
   }
 
   render() {
-    let currentPage = null;
-    switch (this.state.currentPage) {
-      case "intro":
-        currentPage = <Intro onButtonClick={() => this.changePage("select-game")}/>
-        break;
-      case "select-game":
-        currentPage = <SelectGame onButtonClick={this.selectGame} />
-        break;
-      case "select-time":
-        currentPage = <SelectTime onButtonClick={this.selectTime}/>
-        break;
-      case "game":
-        switch (this.state.game) {
-          case "swirl":
-            currentPage = <GameSwirl time={this.state.time} completedGame={this.completedGame} />
-            break;
-          case "switch":
-            currentPage = <GameSwitch time={this.state.time} completedGame={this.completedGame} />
-            break;
-          case "break":
-            currentPage = <GameBreak time={this.state.time}  completedGame={this.completedGame} />
-            break;
-          default:
-            currentPage = <span></span>;
-            break;
-        }
-        break;
-      case "reflection":
-        currentPage = <Reflection totalTime={this.state.totalTime} onButtonClick={() => this.changePage("select-game")} />
-        break;
-      default:
-        currentPage = <span></span>;
-        break;
-    }
-
-    let page = <CSSTransition
-      key={this.state.currentPage}
-      classNames="fade"
-      timeout={{ enter: 400, exit: 400 }}>
-        {currentPage}
-      </CSSTransition>
-    
     return (
-
-      <div className="app">
-        <TransitionGroup>
-          { page }
-        </TransitionGroup>
-      </div>
+      <Router>
+        <div className="app">
+          <Route
+            render={({ location }) => {
+              return (
+                <TransitionGroup>
+                  <CSSTransition
+                    key={location.key}
+                    classNames="fade"
+                    timeout={{ enter: 800, exit: 400 }}
+                  >
+                    <Switch location={location}>
+                      <Route
+                        exact
+                        path="/"
+                        render={() =>
+                          this.state.currentPage === 'intro' ? (
+                            <Intro />
+                          ) : (
+                            <Reflection totalTime={this.state.totalTime} />
+                          )
+                        }
+                      />
+                      <Route
+                        exact
+                        path="/select-game"
+                        render={() => <SelectGame />}
+                      />
+                      <Route
+                        exact
+                        path="/:game"
+                        render={({ match }) =>
+                          ['swirl', 'break', 'switch'].includes(
+                            match.params.game
+                          ) ? (
+                            <SelectTime game={match.params.game} />
+                          ) : (
+                            <Intro />
+                          )
+                        }
+                      />
+                      <Route
+                        exact
+                        path="/:game/:time"
+                        render={({ match }) =>
+                          ['swirl', 'break', 'switch'].includes(
+                            match.params.game
+                          ) ? (
+                            typeof Number(match.params.time) === 'number' &&
+                            Number(match.params.time) > 0 ? (
+                              <Game
+                                name={match.params.game}
+                                time={match.params.time}
+                                completedGame={this.completedGame}
+                              />
+                            ) : (
+                              <SelectTime game={match.params.game} />
+                            )
+                          ) : (
+                            <Intro />
+                          )
+                        }
+                      />
+                      <Route path="*" render={() => <Intro />} />
+                    </Switch>
+                  </CSSTransition>
+                </TransitionGroup>
+              );
+            }}
+          />
+        </div>
+      </Router>
     );
   }
 }

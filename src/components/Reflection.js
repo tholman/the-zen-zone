@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import '../styles/Intro.css';
 import logo from '../assets/Logo.svg';
 
@@ -17,7 +18,9 @@ class Reflection extends Component {
           <p>
             You have been meditating with us for <b>{totalMinutes}</b> minutes and <b>{remainingSeconds}</b> seconds.
           </p>
-          <button onClick={this.props.onButtonClick}>Let's do some more?</button>
+          <Link to="/select-game">
+            <button>Let's do some more?</button>
+          </Link>
         </div>
       </header>
     );
