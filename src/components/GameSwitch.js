@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router';
+import BackButton from './BackButton.js';
 import '../styles/GameSwitch.css';
 import '../styles/Carousel.css';
 import switchSets from '../data/SwitchSets.js';
-import logo from '../assets/Logo.svg';
 
 class GameSwitch extends Component {
 
@@ -23,6 +24,7 @@ class GameSwitch extends Component {
   endGame() {
     let totalTime = new Date().valueOf() - this.startTime.valueOf();
     this.props.completedGame(totalTime);
+    this.props.history.push('/');
   }
 
   onCheckboxChange(event) {
@@ -110,9 +112,7 @@ class GameSwitch extends Component {
 
     return (
       <div>
-        <div className="back" onClick={(event) => {this.endGame(event)}}>
-          <img src={logo} className="App-logo" alt="The Zen Zone" />
-        </div>
+        <BackButton endGame={(event) => {this.endGame(event)}} />
         <section className="carousel-container">
           <div className="carousel" style={carouselStyles}>
             {sets}
@@ -123,4 +123,4 @@ class GameSwitch extends Component {
   }
 }
 
-export default GameSwitch;
+export default withRouter(GameSwitch);
