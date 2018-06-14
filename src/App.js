@@ -53,7 +53,7 @@ class App extends Component {
                       />
                       <Route
                         exact
-                        path="/select-game"
+                        path="/games"
                         render={() => <SelectGame />}
                       />
                       <Route

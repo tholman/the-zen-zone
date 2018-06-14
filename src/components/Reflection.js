@@ -18,7 +18,7 @@ class Reflection extends Component {
           <p>
             You have been meditating with us for <b>{totalMinutes}</b> minutes and <b>{remainingSeconds}</b> seconds.
           </p>
-          <Link to="/select-game">
+          <Link to="/games">
             <button>Let's do some more?</button>
           </Link>
         </div>
