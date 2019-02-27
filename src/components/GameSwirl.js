@@ -45,11 +45,15 @@ class GameSwirl extends Component {
       let set = {
         canvas: this.refs['canvas-' + i],
         context: this.refs['canvas-' + i].getContext('2d'),
-        points: []
+        points: [],
+        colors: [],
+        currentColor: '#000000'
       };
 
       set.canvas.width = this.baseWidth;
       set.canvas.height = this.baseWidth;
+      set.colors = swirlSets[i].colors;
+      set.currentColor = set.colors[5];
 
       for (let j = 0; j < 550; j++) {
         let point = swirlSets[i].system(j, set.canvas.width, set.canvas.height);
@@ -90,12 +94,16 @@ class GameSwirl extends Component {
     
     let context = this.currentSetData.context;
     let points = this.currentSetData.points;
+    let color = this.currentSetData.currentColor;
+    let r = parseInt(color.slice(1, 3), 16);
+    let g = parseInt(color.slice(3, 5), 16);
+    let b = parseInt(color.slice(5, 7), 16);
 
     context.lineCap = "round";
     context.moveTo(points[0].x, points[0].y)
     
     for( let i = 1; i < points.length - 1; i++ ) {
-      context.strokeStyle = "rgba(0, 0, 0, " + (0.1 + points[i].life) + ")";
+      context.strokeStyle = "rgba(" + r + ", " + g + ', ' + b + ", " + (0.1 + points[i].life) + ")";
       context.lineWidth = (8 * points[i].life + 2) + "";
       
       context.beginPath();
@@ -109,6 +117,7 @@ class GameSwirl extends Component {
 
     let points = this.currentSetData.points;
     let foundActive = false;
+    let activePoints = 0;
     
     for( let i = 0; i < points.length; i++ ) {
       let dot = points[i];
@@ -133,7 +142,17 @@ class GameSwirl extends Component {
         // Fade back in
         points[i].life = points[i].life + 0.05;
       }
+
+      if (points[i].active === true) {
+        activePoints += 1;
+      }
     }
+
+    // Change color according to percentage of active points
+    let activePercentage = activePoints / points.length;
+    let colorIdx = Math.round(activePercentage / 0.2);
+    let color = this.currentSetData.colors[colorIdx];
+    this.currentSetData.currentColor = color;
 
     if( foundActive === false ) {
       this.currentSet++;
